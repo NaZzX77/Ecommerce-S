@@ -111,13 +111,29 @@ curl http://localhost:8000/api/v1/health
 
 The backend is configured for MySQL through SQLAlchemy and PyMySQL.
 
-Default local database URL:
+Local-only database URL format:
 
 ```text
-mysql+pymysql://root:password@localhost:3306/ecommerce_s
+mysql+pymysql://MYSQL_USER:MYSQL_PASSWORD@localhost:3306/ecommerce_s
 ```
 
-Update `backend/.env` with your actual MySQL username, password, host, port, and database name before running database-backed features.
+Create a local MySQL database:
+
+```sql
+CREATE DATABASE IF NOT EXISTS ecommerce_s
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+```
+
+Then copy `backend/.env.example` to `backend/.env` and replace the placeholder database username, password, and JWT secret with local-only values. The `.env` file is ignored by Git, so secrets stay on your machine.
+
+Database configuration files:
+
+- `backend/.env` holds local-only database credentials and secrets.
+- `backend/.env.example` documents safe placeholder variables for other developers.
+- `backend/app/core/config.py` loads environment variables with Pydantic Settings.
+- `backend/app/database/session.py` creates the SQLAlchemy engine and session factory from `DATABASE_URL`.
+- `backend/app/database/init_db.py` creates starter tables from the registered SQLAlchemy models during local development.
 
 ## Major Decisions
 
