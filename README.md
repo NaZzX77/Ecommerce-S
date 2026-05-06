@@ -61,6 +61,29 @@ Generated sections:
 - `backend/app/auth` is reserved for JWT authentication helpers.
 - `backend/app/utils` is reserved for shared backend helpers.
 
+Authentication foundation:
+
+- `backend/app/models/user.py` defines the SQLAlchemy `User` table model.
+- `backend/app/schemas/auth.py` defines Pydantic request and response contracts for register, login, users, and tokens.
+- `backend/app/auth/password.py` hashes and verifies passwords with Argon2 through `pwdlib`.
+- `backend/app/auth/jwt.py` creates and decodes JWT access tokens using environment-based settings.
+- `backend/app/auth/dependencies.py` verifies bearer tokens and loads the current authenticated user.
+- `backend/app/services/user_service.py` keeps user lookup, creation, and credential checks out of route handlers.
+- `backend/app/routes/auth.py` exposes register, login, and current-user endpoints.
+- `backend/app/routes/protected.py` provides a small JWT-protected route example.
+- `backend/app/database/init_db.py` creates starter tables from SQLAlchemy metadata for local foundation development.
+
+Frontend authentication foundation:
+
+- `frontend/src/pages/LoginPage.jsx` renders the login form.
+- `frontend/src/pages/RegisterPage.jsx` renders the registration form.
+- `frontend/src/pages/ProtectedDashboard.jsx` shows a simple JWT-protected dashboard.
+- `frontend/src/components/AuthProvider.jsx` owns basic auth state.
+- `frontend/src/components/ProtectedRoute.jsx` redirects anonymous users to login.
+- `frontend/src/hooks/useAuth.js` exposes the auth state hook.
+- `frontend/src/services/authApi.js` calls backend auth endpoints.
+- `frontend/src/services/tokenStorage.js` stores the JWT in `sessionStorage` for this foundation stage. A later production hardening step should move tokens to an HTTP-only cookie flow.
+
 Setup:
 
 ```bash
