@@ -1,0 +1,36 @@
+import StatusBadge from "../components/StatusBadge.jsx";
+import { useHealthCheck } from "../hooks/useHealthCheck.js";
+
+export default function DashboardHome() {
+  const { status, message } = useHealthCheck();
+
+  return (
+    <section className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-ink-900">Project foundation is ready</h2>
+            <p className="mt-1 text-sm text-ink-600">
+              Frontend and backend starter architecture are in place for the next build step.
+            </p>
+          </div>
+          <StatusBadge status={status} />
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          {["React + Vite", "Tailwind CSS", "FastAPI"].map((item) => (
+            <div key={item} className="rounded-md border border-slate-200 bg-slate-50 p-4 text-sm font-medium text-slate-700">
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <aside className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-base font-semibold text-ink-900">API Health</h2>
+        <p className="mt-2 text-sm text-ink-600">{message}</p>
+      </aside>
+    </section>
+  );
+}
+
