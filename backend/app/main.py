@@ -1,12 +1,12 @@
-from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.database.init_db import init_db
-from app.routes import auth, health, protected
+from app.routes import auth, health, products, protected
 
 
 @asynccontextmanager
@@ -34,6 +34,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix=settings.api_v1_prefix, tags=["health"])
     app.include_router(auth.router, prefix=settings.api_v1_prefix, tags=["auth"])
     app.include_router(protected.router, prefix=settings.api_v1_prefix, tags=["protected"])
+    app.include_router(products.router, prefix=settings.api_v1_prefix, tags=["products"])
 
     return app
 

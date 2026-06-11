@@ -22,6 +22,9 @@ export default function AppLayout({ children }) {
             <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/dashboard">
               Dashboard
             </NavLink>
+            <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/products">
+              Products
+            </NavLink>
             {isAuthenticated ? (
               <>
                 <span className="text-slate-500">{user?.full_name}</span>

@@ -5,6 +5,7 @@ import AppLayout from "./layouts/AppLayout.jsx";
 import DashboardHome from "./pages/DashboardHome.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import ProtectedDashboard from "./pages/ProtectedDashboard.jsx";
+import ProductsPage from "./pages/ProductsPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 
 export default function App() {
@@ -21,6 +22,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <ProtectedDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <ProductsPage />
                 </ProtectedRoute>
               }
             />

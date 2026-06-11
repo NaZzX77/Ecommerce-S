@@ -84,6 +84,15 @@ Frontend authentication foundation:
 - `frontend/src/services/authApi.js` calls backend auth endpoints.
 - `frontend/src/services/tokenStorage.js` stores the JWT in `sessionStorage` for this foundation stage. A later production hardening step should move tokens to an HTTP-only cookie flow.
 
+Product management foundation:
+
+- `backend/app/models/product.py` defines the SQLAlchemy `Product` table model.
+- `backend/app/schemas/product.py` defines product create, update, and response schemas.
+- `backend/app/services/product_service.py` keeps product CRUD logic out of route handlers.
+- `backend/app/routes/products.py` exposes JWT-protected product CRUD endpoints.
+- `frontend/src/pages/ProductsPage.jsx` renders the protected product form and table.
+- `frontend/src/services/productApi.js` calls the product CRUD API with the stored JWT.
+
 Setup:
 
 ```bash
