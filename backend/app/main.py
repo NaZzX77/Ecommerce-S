@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.database.init_db import init_db
-from app.routes import auth, customers, health, inventory, products, protected, suppliers
+from app.routes import auth, customers, health, inventory, products, protected, sales, suppliers
 
 
 @asynccontextmanager
@@ -38,6 +38,7 @@ def create_app() -> FastAPI:
     app.include_router(inventory.router, prefix=settings.api_v1_prefix, tags=["inventory"])
     app.include_router(customers.router, prefix=settings.api_v1_prefix, tags=["customers"])
     app.include_router(suppliers.router, prefix=settings.api_v1_prefix, tags=["suppliers"])
+    app.include_router(sales.router, prefix=settings.api_v1_prefix, tags=["sales"])
 
     return app
 

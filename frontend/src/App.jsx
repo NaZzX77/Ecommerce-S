@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import AppLayout from "./layouts/AppLayout.jsx";
+import CreateSalePage from "./pages/CreateSalePage.jsx";
 import CustomersPage from "./pages/CustomersPage.jsx";
 import DashboardHome from "./pages/DashboardHome.jsx";
 import InventoryPage from "./pages/InventoryPage.jsx";
@@ -9,6 +10,8 @@ import LoginPage from "./pages/LoginPage.jsx";
 import ProtectedDashboard from "./pages/ProtectedDashboard.jsx";
 import ProductsPage from "./pages/ProductsPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import SaleDetailsPage from "./pages/SaleDetailsPage.jsx";
+import SalesPage from "./pages/SalesPage.jsx";
 import SuppliersPage from "./pages/SuppliersPage.jsx";
 
 export default function App() {
@@ -57,6 +60,30 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <SuppliersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sales"
+              element={
+                <ProtectedRoute>
+                  <SalesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sales/new"
+              element={
+                <ProtectedRoute>
+                  <CreateSalePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sales/:saleId"
+              element={
+                <ProtectedRoute>
+                  <SaleDetailsPage />
                 </ProtectedRoute>
               }
             />

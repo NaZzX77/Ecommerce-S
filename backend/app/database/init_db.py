@@ -2,7 +2,7 @@ from sqlalchemy import inspect, text
 
 from app.database.base import Base
 from app.database.session import engine
-from app.models import Customer, InventoryTransaction, Product, Supplier, User
+from app.models import Customer, InventoryTransaction, Product, Sale, SaleItem, Supplier, User
 
 
 def ensure_inventory_transaction_schema() -> None:
@@ -49,6 +49,6 @@ def ensure_inventory_transaction_schema() -> None:
 
 def init_db() -> None:
     # Importing models above registers their metadata before create_all runs.
-    _ = (Customer, InventoryTransaction, Product, Supplier, User)
+    _ = (Customer, InventoryTransaction, Product, Sale, SaleItem, Supplier, User)
     Base.metadata.create_all(bind=engine)
     ensure_inventory_transaction_schema()
