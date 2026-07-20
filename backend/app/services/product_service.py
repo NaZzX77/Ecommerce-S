@@ -1,6 +1,7 @@
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
+from app.models.inventory_transaction import InventoryTransaction
 from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductUpdate
 
@@ -57,6 +58,6 @@ def update_product(db: Session, product: Product, product_data: ProductUpdate) -
 
 
 def delete_product(db: Session, product: Product) -> None:
+    db.execute(delete(InventoryTransaction).where(InventoryTransaction.product_id == product.id))
     db.delete(product)
     db.commit()
-

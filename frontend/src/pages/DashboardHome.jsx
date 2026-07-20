@@ -35,6 +35,15 @@ export default function DashboardHome() {
           <Link className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600" to="/products">
             Products
           </Link>
+          <Link className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600" to="/inventory">
+            Inventory
+          </Link>
+          <Link className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600" to="/customers">
+            Customers
+          </Link>
+          <Link className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600" to="/suppliers">
+            Suppliers
+          </Link>
         </div>
       </div>
 

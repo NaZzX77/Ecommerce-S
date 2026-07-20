@@ -19,14 +19,23 @@ export default function AppLayout({ children }) {
             <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/">
               Home
             </NavLink>
-            <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/dashboard">
-              Dashboard
-            </NavLink>
-            <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/products">
-              Products
-            </NavLink>
             {isAuthenticated ? (
               <>
+                <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/dashboard">
+                  Dashboard
+                </NavLink>
+                <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/products">
+                  Products
+                </NavLink>
+                <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/inventory">
+                  Inventory
+                </NavLink>
+                <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/customers">
+                  Customers
+                </NavLink>
+                <NavLink className="font-medium text-slate-600 hover:text-brand-600" to="/suppliers">
+                  Suppliers
+                </NavLink>
                 <span className="text-slate-500">{user?.full_name}</span>
                 <button className="font-medium text-rose-600 hover:text-rose-700" onClick={logout} type="button">
                   Logout
