@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSales } from "../services/saleApi.js";
 
@@ -14,38 +14,65 @@ function customerName(sale) {
 
 export default function SalesPage() {
   const [sales, setSales] = useState([]);
+  const [search, setSearch] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadSales();
-  }, []);
-
-  async function loadSales() {
+  const loadSales = useCallback(async (searchValue = "") => {
     setError("");
     setIsLoading(true);
 
     try {
-      const data = await getSales();
+      const data = await getSales(searchValue);
       setSales(data);
     } catch (caughtError) {
       setError(caughtError.message);
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    loadSales();
+  }, [loadSales]);
+
+  async function handleSearch(event) {
+    event.preventDefault();
+    await loadSales(search);
+  }
+
+  async function clearSearch() {
+    setSearch("");
+    await loadSales("");
   }
 
   return (
     <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-sm font-medium text-brand-600">Sales Management</p>
           <h2 className="text-lg font-semibold text-ink-900">Sales history</h2>
         </div>
-        <div className="flex gap-3">
-          <button className="text-sm font-medium text-brand-600 hover:text-brand-700" onClick={loadSales} type="button">
-            Refresh
-          </button>
+        <div className="flex flex-wrap gap-3">
+          <form className="flex flex-wrap gap-2" onSubmit={handleSearch}>
+            <input
+              className="w-56 rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-600"
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search sale or customer"
+              type="search"
+              value={search}
+            />
+            <button className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700" type="submit">
+              Search
+            </button>
+            <button
+              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600"
+              onClick={clearSearch}
+              type="button"
+            >
+              Clear
+            </button>
+          </form>
           <Link className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700" to="/sales/new">
             Create sale
           </Link>

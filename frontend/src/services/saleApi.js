@@ -25,8 +25,9 @@ async function saleRequest(path, options = {}) {
 }
 
 
-export function getSales() {
-  return saleRequest("/api/v1/sales");
+export function getSales(search = "") {
+  const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : "";
+  return saleRequest(`/api/v1/sales${query}`);
 }
 
 

@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import get_current_user
@@ -26,8 +26,9 @@ def create_sale_route(
 def list_sales_route(
     db: Annotated[Session, Depends(get_db)],
     _: Annotated[User, Depends(get_current_user)],
+    search: Annotated[str | None, Query(max_length=160)] = None,
 ) -> list[SaleResponse]:
-    return get_sales(db)
+    return get_sales(db, search)
 
 
 @router.get("/{sale_id}", response_model=SaleResponse)

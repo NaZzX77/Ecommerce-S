@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import get_current_user
@@ -41,8 +41,9 @@ def create_product_route(
 def list_products_route(
     db: Annotated[Session, Depends(get_db)],
     _: Annotated[User, Depends(get_current_user)],
+    search: Annotated[str | None, Query(max_length=160)] = None,
 ) -> list[ProductResponse]:
-    return get_products(db)
+    return get_products(db, search)
 
 
 @router.get("/{product_id}", response_model=ProductResponse)
@@ -92,4 +93,3 @@ def delete_product_route(
 
     delete_product(db, product)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createProduct, deleteProduct, getProducts, updateProduct } from "../services/productApi.js";
 
 
@@ -25,6 +25,7 @@ function toPayload(form) {
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const [search, setSearch] = useState("");
   const [editingProductId, setEditingProductId] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -32,23 +33,23 @@ export default function ProductsPage() {
 
   const isEditing = useMemo(() => editingProductId !== null, [editingProductId]);
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  async function loadProducts() {
+  const loadProducts = useCallback(async (searchValue = "") => {
     setError("");
     setIsLoading(true);
 
     try {
-      const data = await getProducts();
+      const data = await getProducts(searchValue);
       setProducts(data);
     } catch (caughtError) {
       setError(caughtError.message);
     } finally {
       setIsLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   function updateField(event) {
     setForm((current) => ({
@@ -87,7 +88,7 @@ export default function ProductsPage() {
       }
 
       resetForm();
-      await loadProducts();
+      await loadProducts(search);
     } catch (caughtError) {
       setError(caughtError.message);
     } finally {
@@ -100,13 +101,23 @@ export default function ProductsPage() {
 
     try {
       await deleteProduct(productId);
-      await loadProducts();
+      await loadProducts(search);
       if (editingProductId === productId) {
         resetForm();
       }
     } catch (caughtError) {
       setError(caughtError.message);
     }
+  }
+
+  async function handleSearch(event) {
+    event.preventDefault();
+    await loadProducts(search);
+  }
+
+  async function clearSearch() {
+    setSearch("");
+    await loadProducts("");
   }
 
   return (
@@ -196,14 +207,30 @@ export default function ProductsPage() {
       </form>
 
       <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <p className="text-sm font-medium text-brand-600">Product Management</p>
             <h2 className="text-lg font-semibold text-ink-900">Products</h2>
           </div>
-          <button className="text-sm font-medium text-brand-600 hover:text-brand-700" onClick={loadProducts} type="button">
-            Refresh
-          </button>
+          <form className="flex flex-wrap gap-2" onSubmit={handleSearch}>
+            <input
+              className="w-56 rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-600"
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search name, SKU, notes"
+              type="search"
+              value={search}
+            />
+            <button className="rounded-md bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700" type="submit">
+              Search
+            </button>
+            <button
+              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-brand-600 hover:text-brand-600"
+              onClick={clearSearch}
+              type="button"
+            >
+              Clear
+            </button>
+          </form>
         </div>
 
         {isLoading ? (
@@ -251,4 +278,3 @@ export default function ProductsPage() {
     </section>
   );
 }
-

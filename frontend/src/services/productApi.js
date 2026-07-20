@@ -29,8 +29,9 @@ async function productRequest(path, options = {}) {
 }
 
 
-export function getProducts() {
-  return productRequest("/api/v1/products");
+export function getProducts(search = "") {
+  const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : "";
+  return productRequest(`/api/v1/products${query}`);
 }
 
 
@@ -55,4 +56,3 @@ export function deleteProduct(productId) {
     method: "DELETE",
   });
 }
-

@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete, or_, select
 from sqlalchemy.orm import Session
 
 from app.models.inventory_transaction import InventoryTransaction
@@ -19,8 +19,20 @@ def get_product_by_sku(db: Session, sku: str) -> Product | None:
     return db.scalar(statement)
 
 
-def get_products(db: Session) -> list[Product]:
-    statement = select(Product).order_by(Product.created_at.desc())
+def get_products(db: Session, search: str | None = None) -> list[Product]:
+    statement = select(Product)
+
+    if search and search.strip():
+        search_term = f"%{search.strip()}%"
+        statement = statement.where(
+            or_(
+                Product.name.ilike(search_term),
+                Product.sku.ilike(search_term),
+                Product.description.ilike(search_term),
+            )
+        )
+
+    statement = statement.order_by(Product.created_at.desc())
     return list(db.scalars(statement))
 
 

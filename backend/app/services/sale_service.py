@@ -2,7 +2,7 @@ from collections import defaultdict
 from decimal import Decimal
 
 from fastapi import HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import String, cast, or_, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models.customer import Customer
@@ -25,12 +25,26 @@ def get_sale_by_id(db: Session, sale_id: int) -> Sale | None:
     return db.scalar(statement)
 
 
-def get_sales(db: Session) -> list[Sale]:
+def get_sales(db: Session, search: str | None = None) -> list[Sale]:
     statement = (
         select(Sale)
+        .join(Customer)
         .options(joinedload(Sale.customer), selectinload(Sale.items))
-        .order_by(Sale.created_at.desc())
     )
+
+    if search and search.strip():
+        search_term = f"%{search.strip()}%"
+        statement = statement.where(
+            or_(
+                cast(Sale.id, String).ilike(search_term),
+                Customer.first_name.ilike(search_term),
+                Customer.last_name.ilike(search_term),
+                Customer.phone.ilike(search_term),
+                Customer.email.ilike(search_term),
+            )
+        )
+
+    statement = statement.order_by(Sale.created_at.desc())
     return list(db.scalars(statement))
 
 

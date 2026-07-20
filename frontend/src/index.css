@@ -21,3 +21,24 @@ body {
   font-family: var(--font-sans);
 }
 
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body,
+  html {
+    background: #ffffff;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .printable-invoice {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
