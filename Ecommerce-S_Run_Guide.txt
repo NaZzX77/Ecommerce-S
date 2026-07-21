@@ -1,0 +1,97 @@
+Ecommerce-S - How to Run the Project
+
+Prerequisites - MySQL Server is running. - The ecommerce_s database
+exists. - Your backend .env file contains the correct MySQL credentials.
+
+Project Structure Ecommerce-S/ ├── backend └── frontend
+
+==================================== STEP 1 - Start MySQL
+====================================
+
+Make sure the MySQL80 service is running.
+
+==================================== STEP 2 - Start the Backend
+====================================
+
+Open Terminal 1.
+
+cd backend
+
+Activate the virtual environment:
+
+.
+
+Start the FastAPI server:
+
+uvicorn app.main:app –reload
+
+Expected output:
+
+INFO: Uvicorn running on http://127.0.0.1:8000
+
+Leave this terminal open.
+
+==================================== STEP 3 - Start the Frontend
+====================================
+
+Open Terminal 2.
+
+cd frontend
+
+If this is the first run:
+
+npm install
+
+Start React:
+
+npm run dev
+
+Expected output:
+
+Local: http://localhost:5173
+
+Leave this terminal open.
+
+==================================== STEP 4 - Open the Application
+====================================
+
+Open:
+
+http://localhost:5173
+
+==================================== STEP 5 - Test the Application
+====================================
+
+1.  Register/Login
+2.  Products
+3.  Inventory
+4.  Customers
+5.  Suppliers
+6.  Sales
+7.  Dashboard
+8.  Invoice Print
+
+==================================== IF THE BACKEND DOES NOT START
+====================================
+
+Check backend/.env
+
+Example:
+
+DATABASE_URL=mysql+pymysql://root:YOUR_PASSWORD@localhost:3306/ecommerce_s
+JWT_SECRET_KEY=your-secret-key
+
+Verify: - MySQL is running - Database exists - Username/password are
+correct
+
+==================================== IF THE FRONTEND CANNOT CONNECT
+====================================
+
+1.  Make sure the backend is running.
+2.  Open the browser Developer Tools (F12).
+3.  Check the Console and Network tabs for errors.
+
+==================================== STOPPING THE PROJECT
+====================================
+
+Press CTRL + C in both terminals.
